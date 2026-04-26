@@ -4,120 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Wall Editor</title>
-<style>
-body {
-  font-family: Arial, sans-serif;
-  margin: 16px;
-  background: #1e1e1e;
-  color: #eee;
-}
-.topnote {
-  margin: 0 0 10px 0;
-  padding: 10px;
-  background: #262626;
-  border: 1px solid #444;
-  border-radius: 8px;
-  line-height: 1.4;
-}
-.topnote h3 {
-  margin: 0 0 8px 0;
-  font-size: 14px;
-}
-.topnote ul {
-  margin: 4px 0 0 0;
-  padding-left: 18px;
-  font-size: 13px;
-}
-.topnote li {
-  margin: 2px 0;
-}
-.row {
-  display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
-  align-items: flex-start;
-}
-.canvasWrap {
-  max-height: 70vh;
-  overflow: auto;
-  border: 1px solid #555;
-  background: #111;
-}
-canvas {
-  display: block;
-  image-rendering: pixelated;
-  cursor: crosshair;
-}
-.panel {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  min-width: 340px;
-  max-width: 520px;
-}
-textarea,
-input,
-button,
-select {
-  padding: 8px;
-  font: inherit;
-}
-textarea {
-  width: 100%;
-  height: 220px;
-  background: #111;
-  color: #0f0;
-  border: 1px solid #555;
-  box-sizing: border-box;
-  font-family: monospace;
-}
-.tools,
-.palette,
-.levels,
-.scrollbar {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  align-items: center;
-}
-.swatch {
-  width: 28px;
-  height: 28px;
-  border: 2px solid #888;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 11px;
-  color: #fff;
-  user-select: none;
-}
-.swatch.active {
-  outline: 3px solid #fff;
-}
-.small {
-  font-size: 12px;
-  color: #bbb;
-}
-.levelBtn {
-  font-size: 12px;
-  padding: 6px 8px;
-}
-.levelBtn.active {
-  outline: 2px solid #fff;
-}
-.json-format {
-  margin-top: 8px;
-  font-size: 12px;
-  font-family: monospace;
-  color: #0ff;
-}
-.json-format code {
-  background: rgba(0, 0, 0, 0.6);
-  padding: 2px 4px;
-  border-radius: 3px;
-}
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
   <h2>Wall Editor</h2>
@@ -125,54 +12,33 @@ textarea {
   <div class="topnote">
     <h3>Палитра:</h3>
     <ul>
-      <li>
-        <button type="button" class="swatch" style="background: #7a4b2a" onclick="activeType=1;renderPalette();">1</button>
-        — обычная стена
-      </li>
-      <li>
-        <button type="button" class="swatch" style="background: #2a7fff" onclick="activeType=2;renderPalette();">2</button>
-        — исчезающая
-      </li>
-      <li>
-        <button type="button" class="swatch" style="background: #ff3b30" onclick="activeType=3;renderPalette();">3</button>
-        — взрывается
-      </li>
-      <li>
-        <button type="button" class="swatch" style="background: #2ecc71" onclick="activeType=4;renderPalette();">4</button>
-        — батут
-      </li>
-      <li>
-        <button type="button" class="swatch" style="background: #a855f7" onclick="activeType=5;renderPalette();">5</button>
-        — движущаяся
-      </li>
-      <li>
-        <button type="button" class="swatch" style="background: #f1c40f" onclick="activeType=6;renderPalette();">6</button>
-        — двигающая блоки
-      </li>
+      <li><button type="button" class="swatch" style="background: #7a4b2a">1</button> — обычная стена</li>
+      <li><button type="button" class="swatch" style="background: #2a7fff">2</button> — исчезающая</li>
+      <li><button type="button" class="swatch" style="background: #2ecc71">4</button> — батут</li>
+      <li><button type="button" class="swatch" style="background: #a855f7">5</button> — двигает персонажа ↕</li>
+      <li><button type="button" class="swatch" style="background: #f1c40f">6</button> — двигает персонажа ↔</li>
+      <li><button type="button" class="swatch" style="background: #e67e22">7</button> — движется ↕</li>
+      <li><button type="button" class="swatch" style="background: #e74c3c">8</button> — движется ↓</li>
     </ul>
     <p>Кликни по цвету сверху и рисуй им по сетке.</p>
   </div>
 
   <div class="tools">
-    <label>W: <input id="w" type="number" value="20" min="1" max="500"></label>
-    <label>H: <input id="h" type="number" value="12" min="1" max="500"></label>
-    <label>Cell: <input id="cell" type="number" value="32" min="8" max="64"></label>
-    <button id="resizeBtn">Resize</button>
-    <button id="clearBtn">Clear level</button>
-    <button id="exportBtn">Export JSON</button>
-    <button id="importBtn">Import JSON</button>
+    <label>Ширина: <input id="w" type="number" value="20" min="1" max="500"></label>
+    <label>Высота: <input id="h" type="number" value="12" min="1" max="500"></label>
+    <label>Размер клетки: <input id="cell" type="number" value="32" min="8" max="64"></label>
+    <button id="resizeBtn">Изменить размер</button>
+    <button id="clearBtn">Очистить уровень</button>
+    <button id="importJsonBtn">📥 Импорт JSON из текста</button>
+    <button id="exportJsonBtn">📤 Экспорт JSON в текст</button>
+    <button id="saveFileBtn">💾 Сохранить в файл</button>
+    <button id="loadFileBtn">📂 Загрузить из файла</button>
+    <input id="fileInput" type="file" accept=".json" style="display:none;">
+    <span id="currentFileName" class="small" style="margin-left: 8px;"></span>
   </div>
 
   <div class="palette" id="palette"></div>
   <div class="levels" id="levels" style="margin-top:8px;"></div>
-
-  <div class="scrollbar" style="margin:10px 0;">
-    <button id="upBtn">↑ Scroll Up</button>
-    <button id="downBtn">↓ Scroll Down</button>
-    <label>Offset Y: <input id="offsetY" type="number" value="0" step="1"></label>
-    <button id="applyOffsetBtn">Apply Offset</button>
-    <span class="small">Оффсет сдвигает уровень вверх/вниз для добавления новых рядов.</span>
-  </div>
 
   <div class="row">
     <div class="canvasWrap"><canvas id="canvas"></canvas></div>
@@ -185,185 +51,6 @@ textarea {
     </div>
   </div>
 
-  <script>
-const TYPES = {
-  0: { name: 'Empty',     color: '#111'         },
-  1: { name: 'Wall',       color: '#7a4b2a'      },
-  2: { name: 'Disappear',  color: '#2a7fff'      },
-  3: { name: 'Explode',    color: '#ff3b30'      },
-  4: { name: 'Trampoline', color: '#2ecc71'      },
-  5: { name: 'Moving',     color: '#a855f7'      },
-  6: { name: 'Mover',      color: '#f1c40f'      }
-};
-const canvas = document.getElementById('canvas');
-const ctx = canvas.getContext('2d');
-const wInput = document.getElementById('w');
-const hInput = document.getElementById('h');
-const cellInput = document.getElementById('cell');
-const jsonArea = document.getElementById('jsonArea');
-const offsetYInput = document.getElementById('offsetY');
-const paletteEl = document.getElementById('palette');
-const levelsEl = document.getElementById('levels');
-
-let gridW = 20, gridH = 12, cellSize = 32, drawing = false, activeType = 1, scrollOffsetY = 0;
-let levels = [makeLevel('Level 1', 20, 12)], currentLevelIndex = 0;
-
-function makeGrid(w, h) {
-  return Array.from({ length: h }, () => Array.from({ length: w }, () => 0));
-}
-function makeLevel(name, w, h) {
-  return { name, offsetY: 0, grid: makeGrid(w, h) };
-}
-function cur() {
-  return levels[currentLevelIndex];
-}
-function syncCurrentDims() {
-  gridW = cur().grid[0].length;
-  gridH = cur().grid.length;
-}
-function resizeCanvas() {
-  canvas.width = gridW * cellSize;
-  canvas.height = gridH * cellSize;
-}
-function render() {
-  syncCurrentDims();
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  for (let y = 0; y < gridH; y++) {
-    for (let x = 0; x < gridW; x++) {
-      const t = cur().grid[y][x];
-      ctx.fillStyle = TYPES[t]?.color || '#111';
-      ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
-      ctx.strokeStyle = '#333';
-      ctx.strokeRect(x * cellSize, y * cellSize, cellSize, cellSize);
-    }
-  }
-}
-function getCellFromMouse(e) {
-  const rect = canvas.getBoundingClientRect();
-  const sx = canvas.width / rect.width;
-  const sy = canvas.height / rect.height;
-  return {
-    x: Math.floor((e.clientX - rect.left) * sx / cellSize),
-    y: Math.floor((e.clientY - rect.top) * sy / cellSize)
-  };
-}
-function paintCell(e) {
-  const p = getCellFromMouse(e);
-  if (p.x < 0 || p.y < 0 || p.x >= gridW || p.y >= gridH) return;
-  cur().grid[p.y][p.x] = activeType;
-  render();
-}
-function setLevel(i) {
-  currentLevelIndex = i;
-  syncCurrentDims();
-  wInput.value = gridW;
-  hInput.value = gridH;
-  offsetYInput.value = cur().offsetY;
-  resizeCanvas();
-  render();
-  renderLevelButtons();
-  renderPalette();
-}
-function renderPalette() {
-  paletteEl.innerHTML = '';
-  Object.entries(TYPES).forEach(([id, t]) => {
-    if (id === '0') return;
-    const s = document.createElement('div');
-    s.className = 'swatch' + (Number(id) === activeType ? ' active' : '');
-    s.style.background = t.color;
-    s.title = t.name;
-    s.textContent = id;
-    s.addEventListener('click', () => {
-      activeType = Number(id);
-      renderPalette();
-    });
-    paletteEl.appendChild(s);
-  });
-}
-function renderLevelButtons() {
-  levelsEl.innerHTML = '';
-  levels.forEach((lvl, i) => {
-    const b = document.createElement('button');
-    b.textContent = lvl.name;
-    b.className = 'levelBtn' + (i === currentLevelIndex ? ' active' : '');
-    b.addEventListener('click', () => setLevel(i));
-    levelsEl.appendChild(b);
-  });
-  const add = document.createElement('button');
-  add.textContent = '+ Add level';
-  add.addEventListener('click', () => {
-    levels.push(makeLevel('Level ' + (levels.length + 1), gridW, gridH));
-    setLevel(levels.length - 1);
-  });
-  levelsEl.appendChild(add);
-}
-function exportData() {
-  return JSON.stringify({ levels: levels.map(l => ({
-    name: l.name,
-    offsetY: l.offsetY,
-    grid: l.grid
-  })) }, null, 2);
-}
-function importData(txt) {
-  const data = JSON.parse(txt);
-  if (!data.levels || !Array.isArray(data.levels) || !data.levels.length)
-    throw new Error('bad');
-  levels = data.levels.map((l, idx) => ({
-    name: l.name || ('Level ' + (idx + 1)),
-    offsetY: l.offsetY || 0,
-    grid: l.grid
-  }));
-  setLevel(0);
-}
-
-canvas.addEventListener('mousedown', e => {
-  drawing = true;
-  paintCell(e);
-});
-canvas.addEventListener('mousemove', e => {
-  if (drawing) paintCell(e);
-});
-window.addEventListener('mouseup', () => drawing = false);
-canvas.addEventListener('contextmenu', e => e.preventDefault());
-
-document.getElementById('resizeBtn').addEventListener('click', () => {
-  gridW = parseInt(wInput.value, 10);
-  gridH = parseInt(hInput.value, 10);
-  cellSize = parseInt(cellInput.value, 10);
-  cur().grid = makeGrid(gridW, gridH);
-  resizeCanvas();
-  render();
-});
-document.getElementById('clearBtn').addEventListener('click', () => {
-  cur().grid = makeGrid(gridW, gridH);
-  render();
-});
-document.getElementById('exportBtn').addEventListener('click', () => {
-  jsonArea.value = exportData();
-});
-document.getElementById('importBtn').addEventListener('click', () => {
-  try {
-    importData(jsonArea.value);
-  } catch (err) {
-    alert('Ошибка JSON');
-  }
-});
-document.getElementById('upBtn').addEventListener('click', () => {
-  scrollOffsetY -= cellSize;
-  canvas.parentElement.scrollTop = Math.max(0, canvas.parentElement.scrollTop - cellSize);
-});
-document.getElementById('downBtn').addEventListener('click', () => {
-  scrollOffsetY += cellSize;
-  canvas.parentElement.scrollTop += cellSize;
-});
-document.getElementById('applyOffsetBtn').addEventListener('click', () => {
-  cur().offsetY = parseInt(offsetYInput.value, 10) || 0;
-});
-
-renderPalette();
-renderLevelButtons();
-resizeCanvas();
-render();
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
